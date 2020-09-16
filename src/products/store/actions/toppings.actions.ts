@@ -4,7 +4,7 @@ import {Topping} from "../../models/topping.model";
 export const LOAD_TOPPINGS = '[Products] Load Toppings';
 export const LOAD_TOPPINGS_FAIL = '[Products] Load Toppings Failed';
 export const LOAD_TOPPINGS_SUCCESS = '[Products] Load Toppings Success';
-
+export const VISUALISE_TOPPINGS = '[Products] Visualise Toppings';
 
 export class LoadToppings implements Action {
   public readonly type = LOAD_TOPPINGS;
@@ -24,4 +24,11 @@ export class LoadToppingsSuccess implements Action {
   }
 }
 
-export type ToppingsActions = LoadToppings | LoadToppingsFail | LoadToppingsSuccess
+export class VisualiseToppings implements Action {
+  public readonly type = VISUALISE_TOPPINGS;
+
+  constructor(public payload: number[]) {
+  }
+}
+
+export type ToppingsActions = LoadToppings | LoadToppingsFail | LoadToppingsSuccess | VisualiseToppings

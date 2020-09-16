@@ -1,19 +1,18 @@
 import * as fromToppings from '../actions/toppings.actions';
 import {Topping} from "../../models/topping.model";
-import * as fromPizzas from "../actions/pizzas.actions";
-import {Pizza} from "../../models/pizza.model";
-import {PizzasState} from "./pizzas.reducer";
 
 export interface ToppingsState {
   entities: { [id: number]: Topping };
   loaded: boolean,
   loading: boolean
+  selectedToppings: number[]
 }
 
 export const initialState: ToppingsState = {
   entities: {},
   loaded: false,
-  loading: false
+  loading: false,
+  selectedToppings: []
 };
 
 export const toppingsReducer = (
@@ -46,13 +45,18 @@ export const toppingsReducer = (
           ...state.entities,
         }
       );
-
       return {
         ...state,
         loading: false,
         loaded: true,
         entities,
       };
+    }
+    case fromToppings.VISUALISE_TOPPINGS: {
+      return {
+        ...state,
+        selectedToppings: action.payload
+      }
     }
     default:
       return state
@@ -63,3 +67,4 @@ export const toppingsReducer = (
 export const getToppingsEntities = (state: ToppingsState) => state.entities;
 export const getToppingsLoaded = (state: ToppingsState) => state.loaded;
 export const getToppingsLoading = (state: ToppingsState) => state.loading;
+export const getSelectedToppings = (state: ToppingsState) => state.selectedToppings;
