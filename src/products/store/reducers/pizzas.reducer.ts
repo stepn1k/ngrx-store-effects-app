@@ -19,39 +19,41 @@ export const pizzasReducer = (
   action: fromPizzas.PizzasActions
 ): PizzasState => {
   switch (action.type) {
+    // load pizza
     case fromPizzas.LOAD_PIZZAS:
-      return {
-        ...state,
-        loading: true
-      };
+      return {...state, loading: true};
+    // load fail
     case fromPizzas.LOAD_PIZZAS_FAIL:
-      return {
-        ...state,
-        loaded: false,
-        loading: false
-      };
+      return {...state, loaded: false, loading: false};
+    // load success
     case fromPizzas.LOAD_PIZZAS_SUCCESS: {
       const pizzas = action.payload;
 
       const entities = pizzas.reduce(
         (entities: { [id: number]: Pizza }, pizza: Pizza) => {
-          return {
-            ...entities,
-            [pizza.id]: pizza,
-          };
-        },
-        {
-          ...state.entities,
-        }
+          return {...entities, [pizza.id]: pizza};
+        }, {...state.entities}
       );
+      return {...state, loading: false, loaded: true, entities};
+    }
+    // create pizza success or update pizza
+    case fromPizzas.UPDATE_PIZZA_SUCCESS:
+    case fromPizzas.CREATE_PIZZA_SUCCESS: {
+      const pizza = action.payload;
+      const entities = {...state.entities, [pizza.id]: pizza};
+      return {...state, entities};
+    }
+    // delete pizza
+    case fromPizzas.DELETE_PIZZA_SUCCESS: {
+      const pizza = action.payload;
+      const {[pizza.id]: removed, ...entities} = state.entities;
 
       return {
         ...state,
-        loading: false,
-        loaded: true,
-        entities,
-      };
+        entities
+      }
     }
+    // DEFAULT State
     default:
       return state
   }

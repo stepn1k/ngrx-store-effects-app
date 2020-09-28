@@ -12,6 +12,7 @@ export class PizzasEffects {
   constructor(private actions$: Actions, private pizzasService: PizzasService) {
   }
 
+  // load pizzas
   @Effect()
   loadPizzas$ = this.actions$.ofType(pizzaActions.LOAD_PIZZAS).pipe(
     switchMap(() => {
@@ -20,5 +21,42 @@ export class PizzasEffects {
         catchError(error => of(new pizzaActions.LoadPizzasFail(error)))
       )
     })
-  )
+  );
+
+  // create pizza
+  @Effect()
+  createPizza$ = this.actions$.ofType(pizzaActions.CREATE_PIZZA).pipe(
+    map((action: pizzaActions.CreatePizza) => action.payload),
+    switchMap((pizza) => {
+      return this.pizzasService.createPizza(pizza).pipe(
+        map(pizza => new pizzaActions.CreatePizzaSuccess(pizza)),
+        catchError(error => of(new pizzaActions.CreatePizzaFail(error)))
+      )
+    })
+  );
+
+  // update pizza
+  @Effect()
+  updatePizza$ = this.actions$.ofType(pizzaActions.UPDATE_PIZZA).pipe(
+    map((action: pizzaActions.UpdatePizza) => action.payload),
+    switchMap((pizza) => {
+      return this.pizzasService.updatePizza(pizza).pipe(
+        map(pizza => new pizzaActions.UpdatePizzaSuccess(pizza)),
+        catchError(error => of(new pizzaActions.UpdatePizzaFail(error)))
+      )
+    })
+  );
+
+  // delete pizza
+  @Effect()
+  deletePizza$ = this.actions$.ofType(pizzaActions.DELETE_PIZZA).pipe(
+    map((action: pizzaActions.DeletePizza) => action.payload),
+    switchMap((pizza) => {
+      return this.pizzasService.removePizza(pizza).pipe(
+        map(() => new pizzaActions.DeletePizzaSuccess(pizza)),
+        catchError(error => of(new pizzaActions.DeletePizzaFail(error)))
+      )
+    })
+  );
+
 }

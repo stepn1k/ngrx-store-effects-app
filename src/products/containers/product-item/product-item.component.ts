@@ -52,13 +52,14 @@ export class ProductItemComponent implements OnInit {
   }
 
   onCreate(event: Pizza) {
-
+    this.store.dispatch(new fromStore.CreatePizza(event));
   }
 
   onUpdate(event: Pizza) {
-
+    this.store.dispatch(new fromStore.UpdatePizza(event))
   }
 
   onRemove(event: Pizza) {
+    this.store.dispatch(new fromStore.DeletePizza(event))
   }
 }
