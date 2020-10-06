@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Pizza} from '../../models/pizza.model';
 import {Topping} from '../../models/topping.model';
 import {Store} from "@ngrx/store";
@@ -8,6 +8,7 @@ import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'product-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['product-item.component.scss'],
   template: `
       <div
